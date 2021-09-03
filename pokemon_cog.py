@@ -14,31 +14,6 @@ class pokemon_cog(commands.Cog):
         pokemon_img_url = response.json()['sprites']['front_default']
         return pokemon_name, pokemon_img_url
 
-    @commands.command(name="pokemon", help="Returns a random pokemon sprite.")
-    async def pokemon(self, ctx, *args):
-        if len(args)==0:
-            # Get a random pokemon if the type was not specified
-            random_number = random.randint(1, 898)
-            name, img_url = self.get_sprite(random_number)
-            await ctx.send(img_url)
-        if len(args)==1:
-            # Random by Type
-            type=args[0].lower()
-            try:
-                type_id=self.TYPE[type]
-            except Exception as e:
-                await ctx.send(f'Invalid Type. Valid types are {list(self.TYPE.keys())}')
-                raise e
-            response = requests.get(f"https://pokeapi.co/api/v2/type/{type_id}")
-            if response.status_code == 200:
-                poke_list = response.json()['pokemon']
-                random_number = random.randint(0,len(poke_list)-1)
-                random_pokemon = poke_list[random_number]['pokemon']['name']
-                name, img_url = self.get_sprite(random_pokemon)
-                await ctx.send(img_url)
-            else:
-                await ctx.send("Could not get pokemon type!")
-
     @commands.command(name="pokerace", help="Returns a random pokemon sprite for participants to guess.")
     async def race(self, ctx, max_number):
         # Get random Pokemon
