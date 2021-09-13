@@ -1,6 +1,12 @@
 from discord.ext import commands
-from variables import TOKEN
+import os,sys
 
+# Get discord TOKEN
+try:
+   TOKEN = os.environ["TOKEN"]
+except KeyError:
+   print("Please set the environment variable TOKEN")
+   sys.exit(1)
 
 #import all of the cogs
 from music_cog import music_cog
